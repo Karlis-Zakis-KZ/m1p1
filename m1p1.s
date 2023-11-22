@@ -19,17 +19,19 @@ convert_loop:
     bgt convert_uppercase
 
     cmp r6, #1  // If flag is set, convert to uppercase
-    subeq r5, r5, #32
+    subeq r5, r5, #32  // Convert to uppercase
+    moveq r6, #0  // Reset flag
     strb r5, [r4]  // Store converted character
-    mov r6, #0  // Reset flag
-    b next_char
+    beq next_char
 
 convert_uppercase:
     cmp r5, #65  // Check if character is uppercase
     blt next_char
     cmp r5, #90
     bgt next_char
+    b convert_lowercase
 
+convert_lowercase:
     add r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store converted character
 
