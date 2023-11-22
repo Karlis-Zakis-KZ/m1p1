@@ -19,7 +19,7 @@ convert_loop:
     bgt convert_uppercase
 
     cmp r6, #1  // If flag is set, convert to uppercase
-    moveq r5, r5, sub #32
+    subeq r5, r5, #32  // Subtract 32 if previous condition was equal
     strb r5, [r4]  // Store converted character
     mov r6, #0  // Reset flag
     b next_char
