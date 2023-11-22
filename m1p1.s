@@ -14,9 +14,9 @@ convert_loop:
     beq next_char
 
     cmp r5, #97  // Check if character is lowercase
-    blt convert_uppercase
+    blt convert_lowercase
     cmp r5, #122
-    bgt convert_uppercase
+    bgt convert_lowercase
 
     cmp r6, #1  // If flag is set, convert to uppercase
     subeq r5, r5, #32  // Subtract 32 if previous condition was equal
@@ -24,13 +24,13 @@ convert_loop:
     mov r6, #0  // Reset flag
     b next_char
 
-convert_uppercase:
+convert_lowercase:
     cmp r5, #65  // Check if character is uppercase
     blt next_char
     cmp r5, #90
     bgt next_char
 
-    add r5, r5, #32  // Convert to lowercase
+    addeq r5, r5, #32  // Convert to lowercase if previous condition was equal
     strb r5, [r4]  // Store converted character
 
 next_char:
