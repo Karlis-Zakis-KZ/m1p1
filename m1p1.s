@@ -10,7 +10,7 @@ convert_loop:
     beq end_convert  // If end of string, exit loop
 
     cmp r5, #32  // Check for space
-    moveq r6, #1  // If space, set flag to uppercase next character
+    mov r6, #1  // If space, set flag to uppercase next character
     beq next_char
 
     cmp r5, #97  // Check if character is lowercase
