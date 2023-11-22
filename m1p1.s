@@ -15,25 +15,23 @@ convert_loop:
 
     cmp r5, #97  // Check if character is lowercase
     blt skip_charater
-    moveq r6, #0
     cmp r5, #122
     bgt skip_charater
-    moveq r6, #0
 
     cmp r6, #1  // If flag is set, convert to uppercase
     subeq r5, r5, #32  // Convert to uppercase
-    moveq r6, #0  // Reset flag
     strb r5, [r4]  // Store converted character
+    moveq r6, #0  // Reset flag
     beq next_char
 
 skip_charater:
-    moveq r6, #0
     cmp r5, #65  // Check if character is uppercase
     blt next_char
     cmp r5, #90
     bgt next_char
     addge r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store converted character
+    mov r6, #0  // Reset flag
 
 next_char:
     add r4, r4, #1  // Move to next character
