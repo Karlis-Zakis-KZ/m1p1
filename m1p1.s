@@ -34,6 +34,7 @@ skip_charater:
     bgt next_char
     addge r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store converted character
+    beq next_char
 
 next_char:
     add r4, r4, #1  // Move to next character
