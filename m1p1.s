@@ -14,9 +14,9 @@ convert_loop:
     beq next_char
 
     cmp r5, #97  // Check if character is lowercase
-    blt convert_uppercase
+    blt skip_charater
     cmp r5, #122
-    bgt convert_uppercase
+    bgt skip_charater
 
     cmp r6, #1  // If flag is set, convert to uppercase
     subeq r5, r5, #32  // Convert to uppercase
@@ -24,11 +24,13 @@ convert_loop:
     strb r5, [r4]  // Store converted character
     beq next_char
 
-convert_uppercase:
+skip_charater:
     cmp r5, #65  // Check if character is uppercase
     blt next_char
     cmp r5, #90
     bgt next_char
+    cmp r5 #65  // If uppercase, convert to lowercase
+    subge r5, r5, #32  // Convert to lowercase
 
 
 next_char:
