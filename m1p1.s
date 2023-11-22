@@ -29,7 +29,7 @@ skip_charater:
     blt next_char
     cmp r5, #90
     bgt next_char
-    cmp r5 #65  // If uppercase, convert to lowercase
+    cmp r5, #65  // If uppercase, convert to lowercase
     subge r5, r5, #32  // Convert to lowercase
 
 
