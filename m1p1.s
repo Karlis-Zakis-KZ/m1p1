@@ -31,6 +31,7 @@ skip_charater:
     bgt next_char
     cmp r5, #65  // If uppercase, convert to lowercase
     subge r5, r5, #32  // Convert to lowercase
+    strb r5, [r4]  // Store converted character
 
 
 next_char:
