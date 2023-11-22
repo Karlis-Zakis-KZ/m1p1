@@ -29,11 +29,7 @@ convert_uppercase:
     blt next_char
     cmp r5, #90
     bgt next_char
-    b convert_lowercase
 
-convert_lowercase:
-    add r5, r5, #32  // Convert to lowercase
-    strb r5, [r4]  // Store converted character
 
 next_char:
     add r4, r4, #1  // Move to next character
