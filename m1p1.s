@@ -15,8 +15,10 @@ convert_loop:
 
     cmp r5, #97  // Check if character is lowercase
     blt skip_charater
+    moveq r6, #0
     cmp r5, #122
     bgt skip_charater
+    moveq r6, #0
 
     cmp r6, #1  // If flag is set, convert to uppercase
     subeq r5, r5, #32  // Convert to uppercase
