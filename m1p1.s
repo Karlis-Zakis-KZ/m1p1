@@ -1,37 +1,32 @@
 .global m1p1
 m1p1:
-    push {r4-r7, lr}  // Save registers
-    mov r4, r0  // Copy pointer to r4
-    mov r6, #1  // Initialize flag for first character of a word
+    push {lr}              @ save the return address
+    mov r1, #0             @ initialize a flag to check if the previous character was a space
 
-convert_loop:
-    ldrb r5, [r4]  // Load byte at pointer
-    cmp r5, #0  // Check for end of string
-    beq end_convert  // If end of string, exit loop
+convert:
+    ldrb r2, [r0], #1      @ load the current character into r2 and increment the pointer
+    cmp r2, #0             @ compare the current character with null
+    beq end                @ if it's null, we've reached the end of the string, so branch to end
 
-    cmp r5, #32  // Check for space
-    moveq r6, #1  // If space, set flag to uppercase next character
-    beq next_char
+    cmp r2, #' '           @ compare the current character with space
+    moveq r1, #1           @ if it's a space, set the flag to 1
+    bne next               @ if it's not a space, branch to next
 
-    cmp r6, #1  // If flag is set, convert to uppercase
-    subeq r5, r5, #32  // Subtract 32 if previous condition was equal
-    moveq r6, #0  // Reset flag after converting to uppercase
-    b store_char
+next:
+    cmp r1, #1             @ check if the previous character was a space
+    bne lower              @ if it wasn't, branch to lower
+    sub r2, r2, #'a'-'A'   @ if it was, convert the current character to uppercase
+    strb r2, [r0, #-1]     @ store the converted character back into the string
+    mov r1, #0             @ reset the flag
+    b convert              @ branch back to convert
 
-convert_lowercase:
-    cmp r5, #65  // Check if character is uppercase
-    blt store_char
-    cmp r5, #90
-    bgt store_char
+lower:
+    cmp r2, #'a'
+    blt convert            @ if the character is not a lowercase letter, branch back to convert
+    cmp r2, #'z'
+    bgt convert            @ if the character is not a lowercase letter, branch back to convert
+    strb r2, [r0, #-1]     @ store the lowercase character back into the string
+    b convert              @ branch back to convert
 
-    add r5, r5, #32  // Convert to lowercase
-
-store_char:
-    strb r5, [r4]  // Store converted character
-
-next_char:
-    add r4, r4, #1  // Move to next character
-    b convert_loop  // Repeat loop
-
-end_convert:
-    pop {r4-r7, pc}  // Restore registers and return
+end:
+    pop {pc}               @ return to the caller
