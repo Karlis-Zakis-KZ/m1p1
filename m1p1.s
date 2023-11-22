@@ -25,6 +25,7 @@ convert_loop:
     beq next_char
 
 skip_charater:
+    moveq r6, #0
     cmp r5, #65  // Check if character is uppercase
     blt next_char
     cmp r5, #90
