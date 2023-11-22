@@ -20,8 +20,8 @@ convert_loop:
 
     cmp r6, #1  // If flag is set, convert to uppercase
     subeq r5, r5, #32  // Corrected line
+    moveq r6, #0  // Reset flag if character was converted to uppercase
     strb r5, [r4]  // Store converted character
-    mov r6, #0  // Reset flag
     b next_char
 
 convert_uppercase:
