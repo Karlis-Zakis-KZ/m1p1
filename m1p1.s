@@ -29,10 +29,8 @@ skip_charater:
     blt next_char
     cmp r5, #90
     bgt next_char
-    cmp r5, #65  // If uppercase, convert to lowercase
-    subge r5, r5, #32  // Convert to lowercase
+    addge r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store converted character
-
 
 next_char:
     add r4, r4, #1  // Move to next character
