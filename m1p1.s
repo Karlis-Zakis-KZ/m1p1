@@ -1,72 +1,45 @@
-// Convert text to title case
-
 .global m1p1
-
 m1p1:
-  // Save registers
-  push {r4-r7, lr}
+    push {r4-r7, lr}  // Save registers
+    mov r4, r0  // Copy pointer to r4
+    mov r6, #1  // Initialize flag for first character of a word
 
-  // Load the pointer to the string from r0
-  mov r4, r0
+convert_loop:
+    ldr r5, [r4] // Load byte at pointer
+    cmp r5, #0 // Check for end of string
+    beq end_convert // If end of string, exit loop
 
-  // Set a flag to indicate if the next character should be uppercase
-  mov r5, #1
+    cmp r5, #32 // Check for space
+    moveq r6, #1 // If space, set flag to uppercase next character
+    bne next_char // If not space, continue processing
 
-  // Loop through the string until the null terminator is encountered
-  loop:
-    // Load the current character from the string
-    ldr r6, [r4]
+    cmp r6, #1 // If flag is set, convert to uppercase
+    subeq r5, r5, #32 // Convert to uppercase
+    strb r5, [r4] // Store converted character
+    mov r6, #0 // Reset flag
+    b next_char // Move to next character
 
-    // Check if the current character is a space
-    cmp r6, #32
-    bne handle_character
+    // Handle subsequent characters
+    cmp r5, #65 // Check if character is uppercase
+    blt next_char // If lowercase, continue processing
+    cmp r5, #90 // Check if character is uppercase
+    bgt next_char // If uppercase, continue processing
 
-    // If it's a space, set the flag to uppercase the next character
-    mov r5, #1
+    add r5, r5, #32 // Convert to lowercase
+    strb r5, [r4] // Store converted character
 
-    // Move to the next character
-    add r4, r4, #1
+convert_uppercase:
+    cmp r5, #65  // Check if character is uppercase
+    blt next_char
+    cmp r5, #90
+    bgt next_char
 
-    // Check if the current character is the null terminator
-    cmp r6, #0
-    beq end_of_string
+    add r5, r5, #32  // Convert to lowercase
+    strb r5, [r4]  // Store converted character
 
-    // Go to the next iteration of the loop
-    b loop
+next_char:
+    add r4, r4, #1  // Move to next character
+    b convert_loop  // Repeat loop
 
-  // Handle non-space characters
-handle_character:
-    // Check if the flag is set for uppercase
-    cmp r5, #1
-
-    // If the flag is set, convert the character to uppercase
-    bne convert_to_uppercase
-
-    // If the flag is not set, check if the character is lowercase
-    cmp r6, #97
-    blt next_character
-
-    // If the character is lowercase, convert it to uppercase
-    cmp r6, #122
-    bgt next_character
-
-convert_to_uppercase:
-    // Subtract 32 to convert the character to uppercase
-    sub r6, r6, #32
-
-    // Store the converted character back to the string
-    strb r6, [r4]
-
-next_character:
-    // Clear the flag for the next character
-    mov r5, #0
-
-    // Move to the next character
-    add r4, r4, #1
-
-  // Go back to the start of the loop
-  b loop
-
-end_of_string:
-  // Restore registers
-  pop {r4-r7, pc}
+end_convert:
+    pop {r4-r7, pc}  // Restore registers and return
