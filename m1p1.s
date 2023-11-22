@@ -9,24 +9,25 @@ convert_loop:
     cmp r5, #0  // Check for end of string
     beq end_convert  // If end of string, exit loop
 
-    cmp r6, #1  // Check if it's the first character of a word
-    beq convert_uppercase
+    cmp r5, #32  // Check for space
+    moveq r6, #1  // If space, set flag to uppercase next character
+    beq next_char
 
-    cmp r5, #65  // Check if character is uppercase
-    blt convert_lowercase
-    cmp r5, #90
-    bgt convert_lowercase
+    cmp r5, #97  // Check if character is lowercase
+    blt convert_uppercase
+    cmp r5, #122
+    bgt convert_uppercase
 
-convert_uppercase:
-    sub r5, r5, #32  // Convert to uppercase
+    cmp r6, #1  // If flag is set, convert to uppercase
+    moveq r5, r5, sub #32
     strb r5, [r4]  // Store converted character
-    moveq r6, #0  // Reset flag if character was converted to uppercase
+    mov r6, #0  // Reset flag
     b next_char
 
-convert_lowercase:
-    cmp r5, #97  // Check if character is lowercase
+convert_uppercase:
+    cmp r5, #65  // Check if character is uppercase
     blt next_char
-    cmp r5, #122
+    cmp r5, #90
     bgt next_char
 
     add r5, r5, #32  // Convert to lowercase
@@ -34,9 +35,6 @@ convert_lowercase:
 
 next_char:
     add r4, r4, #1  // Move to next character
-    ldrb r5, [r4]  // Load byte at pointer for the next character
-    cmp r5, #32  // Check if next character is a space
-    moveq r6, #1  // Set flag if it's a space
     b convert_loop  // Repeat loop
 
 end_convert:
