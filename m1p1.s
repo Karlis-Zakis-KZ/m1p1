@@ -16,8 +16,18 @@ convert_loop:
     cmp r6, #1  // If flag is set, convert to uppercase
     subeq r5, r5, #32  // Subtract 32 if previous condition was equal
     moveq r6, #0  // Reset flag after converting to uppercase
+    b store_char
+
+convert_lowercase:
+    cmp r5, #65  // Check if character is uppercase
+    blt store_char
+    cmp r5, #90
+    bgt store_char
+
+    add r5, r5, #32  // Convert to lowercase
+
+store_char:
     strb r5, [r4]  // Store converted character
-    b next_char
 
 next_char:
     add r4, r4, #1  // Move to next character
