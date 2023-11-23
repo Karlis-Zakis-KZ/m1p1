@@ -1,45 +1,54 @@
 .global m1p1
+
 m1p1:
-    push {r4-r7, lr}  // Save registers
-    mov r4, r0  // Copy pointer to r4
-    mov r6, #1  // Initialize flag for first character of a word
+    mov r6, #4
+    
+    mov r4, r0
+    mov r5, #0 // counter
 
-convert_loop:
-    ldrb r5, [r4]  // Load byte at pointer
-    cmp r5, #0  // Check for end of string
-    beq end_convert  // If end of string, exit loop
+loop:
+    ldrb r3, [r4, r5] @ load the character from the string
 
-    cmp r5, #32  // Check for space
-    moveq r6, #1  // If space, set flag to uppercase next character
-    beq next_char
+    cmp r3, #0
+    beq exit_loop
 
-    cmp r5, #97  // Check if character is lowercase
-    blt skip_charater
-    moveq r6, #0
-    cmp r5, #122
-    bgt skip_charater
-    moveq r6, #0
+    cmp r5, #0 @ check if it's the first character
+    beq capitalize
 
-    cmp r6, #1  // If flag is set, convert to uppercase
-    subeq r5, r5, #32  // Convert to uppercase
-    moveq r6, #0  // Reset flag
-    strb r5, [r4]  // Store converted character
-    beq next_char
+    cmp r3, #' ' @ check if it's a space
+    beq capitalizeNext
 
-skip_charater:
-    cmp r5, #65  // Check if character is uppercase
-    blt next_char
-    cmp r5, #90
-    bgt next_char
+    cmp r3, #'Z' @ check if the character is equal to or greater than lowercase 'a'
+    ble lowercase @ if it's not, then skip
 
-    cmp r6, #0  // If flag is set, convert to lowercase
-    add r5, r5, #32  // Convert to lowercase
-    strb r5, [r4]  // Store converted character
-    b next_char
+    bge skip
 
-next_char:
-    add r4, r4, #1  // Move to next character
-    b convert_loop  // Repeat loop
+skip:
+    add r5, r5, #1 @ inc the counter
+    b loop 
 
-end_convert:
-    pop {r4-r7, pc}  // Restore registers and return
+capitalizeNext:
+    add r5, r5, #1
+    ldrb r3, [r4, r5]
+    sub r3, r3, #32  @ convert lowercase to uppercase
+    strb r3, [r0, r5]
+    add r5, r5, #1
+    b loop
+
+capitalize:
+    sub r3, r3, #32  @ convert lowercase to uppercase
+    strb r3, [r0, r5]
+    add r5, r5, #1
+    b loop
+
+lowercase:
+    cmp r3, #'A'
+    blt skip
+
+    add r3, r3, #32  @ convert uppercase to lowercase
+    strb r3, [r0, r5]
+    add r5, r5, #1
+    b loop
+
+exit_loop:
+    bx lr  
