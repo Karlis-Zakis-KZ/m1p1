@@ -27,13 +27,13 @@ convert_loop:
     beq next_char
 
 skip_charater:
+    cmp r6, #0  // If flag is not set, convert to lowercase
+    beq make_lowercase
+
     cmp r5, #65  // Check if character is uppercase
     blt next_char
     cmp r5, #90
     bgt next_char
-
-    cmp r6, #0  // If flag is not set, convert to lowercase
-    beq make_lowercase
 
     b next_char
 
