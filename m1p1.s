@@ -33,7 +33,7 @@ skip_charater:
     bgt next_char
 
     cmp r6, #0  // If flag is not set, convert to lowercase
-    beq end_convert
+    beq make_lowercase
 
     b next_char
 
