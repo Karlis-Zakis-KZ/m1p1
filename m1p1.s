@@ -38,6 +38,7 @@ skip_charater:
     b next_char
 
 make_lowercase:
+    moveq r6, #0
     add r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store converted character
     b next_char
