@@ -30,7 +30,6 @@ skip_charater:
     cmp r3, #'Z'
     bgt next_char
 
-    cmp r6, #1  // If flag is set, convert to lowercase
     add r3, r3, #32  // Convert to lowercase
     strb r3, [r4, r5]  // Store converted character
     b next_char
