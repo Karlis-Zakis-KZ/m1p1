@@ -3,7 +3,6 @@ m1p1:
     push {r4-r7, lr}  // Save registers
     mov r4, r0  // Copy pointer to r4
     mov r5, #0  // Initialize counter
-    mov r6, #1  // Initialize flag for first character of a word
 
 convert_loop:
     ldrb r3, [r4, r5]  // Load byte at pointer
