@@ -26,8 +26,7 @@ skip_character:
     cmp r6, #0  // If flag is not set, convert to lowercase
     beq make_lowercase
 
-    
-    blt next_char
+    b next_char
 
 capitalize:
     sub r5, r5, #32  // Convert to uppercase
