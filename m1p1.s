@@ -20,9 +20,11 @@ convert_loop:
     beq next_char  // Skip to next character if space
 
     cmp r5, #122  // Check if character is uppercase
+    movgt r6, #0
     bgt next_char  // Skip to next character if uppercase
 
     cmp r5, #65  // Check if character is lowercase
+    movlt r6, #0
     blt next_char  // Skip to next character if not lowercase
 
     cmp r5, #'a'  // Check if character is lowercase
