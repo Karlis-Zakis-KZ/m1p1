@@ -22,7 +22,7 @@ convert_loop:
     cmp r5, #'a'  // Check if character is lowercase
     bge checkifneedswork  // Skip to next character if not lowercase
 
-    cmp r5, #'Z'  // Check if character is lowercase
+    cmp r5, #'A'  // Check if character is lowercase
     bge lowercase
 
 
