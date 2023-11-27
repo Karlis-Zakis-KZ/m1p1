@@ -21,7 +21,7 @@ convert_loop:
     moveq r6, #0
 
     cmp r6, #1  // If flag is set, convert to uppercase
-    beq capitalize
+    beq checkifuppercase
 
 skip_charater:
     cmp r5, #65  // Check if character is uppercase
@@ -33,6 +33,14 @@ skip_charater:
     add r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store converted character
     b next_char
+
+checkifuppercase:
+    cmp r5, #90  // Check if character is uppercase
+    moveq r6, #0  // Reset flag
+    blt next_char
+
+    cmp r5, #97  // Check if character is lowercase
+    bgt capitalize
 
 capitalize:
     sub r5, r5, #32  // Convert to uppercase
