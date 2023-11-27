@@ -39,6 +39,7 @@ skip_charater:
 capitilize:
     sub r5, r5, #32  // Convert to uppercase
     strb r5, [r4]  // Store converted character
+    mov r6, #0
     b next_char
 
 make_lowercase:
