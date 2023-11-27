@@ -6,6 +6,7 @@ m1p1:
 
 convert_loop:
     ldrb r5, [r4]  // Load byte at pointer
+    
     cmp r5, #0  // Check for end of string
     beq end_convert  // If end of string, exit loop
 
@@ -16,15 +17,13 @@ convert_loop:
     cmp r5, #97  // Check if character is lowercase
     blt skip_charater
     moveq r6, #0
+    
     cmp r5, #122
     bgt skip_charater
     moveq r6, #0
 
     cmp r6, #1  // If flag is set, convert to uppercase
-    subeq r5, r5, #32  // Convert to uppercase
-    moveq r6, #0  // Reset flag
-    strb r5, [r4]  // Store converted character
-    beq next_char
+    beq capitilize
 
 skip_charater:
     cmp r6, #0  // If flag is not set, convert to lowercase
@@ -35,6 +34,11 @@ skip_charater:
     cmp r5, #90
     bgt next_char
 
+    b next_char
+
+capitilize:
+    sub r5, r5, #32  // Convert to uppercase
+    strb r5, [r4]  // Store converted character
     b next_char
 
 make_lowercase:
