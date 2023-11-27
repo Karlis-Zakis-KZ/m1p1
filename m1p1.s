@@ -14,7 +14,7 @@ convert_loop:
     moveq r6, #1  // If space, set flag to uppercase next character
     beq next_char
 
-    cmp r5, #96  // Check if character is lowercase
+    cmp r5, #97  // Check if character is lowercase
     blt skip_charater
     moveq r6, #0
     
@@ -43,7 +43,6 @@ capitilize:
     b next_char
 
 make_lowercase:
-    moveq r6, #0
     add r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store converted character
     b next_char
