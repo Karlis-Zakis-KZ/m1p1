@@ -11,12 +11,13 @@ convert_loop:
     beq end_convert  // If end of string, exit loop
 
     cmp r5, #32  // Check for space
-    beq next_char
+    beq next_andsetglag
 
     cmp r5, #97  // Check if character is lowercase
     blt skip_character
+
     cmp r5, #122
-    bgt skip_character
+    bgt next_char
 
     cmp r6, #1  // If flag is set, convert to uppercase
     beq capitalize
@@ -39,9 +40,11 @@ make_lowercase:
     mov r6, #0
     b next_char
 
+next_andsetglag:
+    mov r6, #1
+    b next_char
+
 next_char:
-    cmp r5, #32  // Check for space
-    moveq r6, #1  // If space, set flag to uppercase next character
     add r4, r4, #1  // Move to next character
     b convert_loop  // Repeat loop
 
