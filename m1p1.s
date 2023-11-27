@@ -11,27 +11,23 @@ convert_loop:
     beq end_convert  // If end of string, exit loop
 
     cmp r5, #32  // Check for space
-    moveq r6, #1  // If space, set flag to uppercase next character
     beq next_char
 
     cmp r5, #97  // Check if character is lowercase
-    blt skip_charater
-    moveq r6, #0
-    
+    blt skip_character
     cmp r5, #122
-    bgt next_char
-    moveq r6, #0
+    bgt skip_character
 
     cmp r6, #1  // If flag is set, convert to uppercase
-    beq capitilize
+    beq capitalize
 
-skip_charater:
+skip_character:
     cmp r6, #0  // If flag is not set, convert to lowercase
     beq make_lowercase
 
     b next_char
 
-capitilize:
+capitalize:
     sub r5, r5, #32  // Convert to uppercase
     strb r5, [r4]  // Store converted character
     mov r6, #0
@@ -40,9 +36,12 @@ capitilize:
 make_lowercase:
     add r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store converted character
+    mov r6, #0
     b next_char
 
 next_char:
+    cmp r5, #32  // Check for space
+    moveq r6, #1  // If space, set flag to uppercase next character
     add r4, r4, #1  // Move to next character
     b convert_loop  // Repeat loop
 
