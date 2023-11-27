@@ -11,6 +11,12 @@ convert_loop:
 
     cmp r5, #' '
     moveq r6, #1  // Set flag if character is a space
+    cmp r5, #9
+    moveq r6, #1  // Set flag if character is a tab
+    cmp r5, #10
+    moveq r6, #1  // Set flag if character is a newline
+    cmp r5, #13
+    moveq r6, #1  // Set flag if character is a carriage return
     beq next_char  // Skip to next character if space
 
     cmp r5, #122  // Check if character is uppercase
@@ -33,6 +39,9 @@ checkif_need_uppercase:
     bne next_char  // If not first character, skip to next character
 
 checkif_need_lovercase:
+    cmp r5, #'Z'  // Check if character is uppercase
+    bgt next_char
+
     cmp r6, #1  // Check if first character of a word
     moveq r6, #0
     beq next_char  // If first character, capitalize
