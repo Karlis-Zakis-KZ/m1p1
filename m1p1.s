@@ -22,14 +22,14 @@ convert_loop:
     cmp r5, #122  // Check if character is uppercase
     bgt if_not_letter  // Skip to next character if uppercase
 
-    cmp r5, #65  // Check if character is lowercase
-    blt if_not_letter  // Skip to next character if not lowercase
+    //cmp r5, #65  // Check if character is lowercase
+    //blt if_not_letter  // Skip to next character if not lowercase
 
     cmp r5, #'a'  // Check if character is lowercase
     bge checkif_need_uppercase  // Skip to next character if not lowercase
 
     cmp r5, #'A'  // Check if character is lowercase
-    bge checkif_need_lovercase
+    bge checkif_need_lowercase
 
 
 checkif_need_uppercase:
@@ -38,7 +38,7 @@ checkif_need_uppercase:
 
     bne next_char  // If not first character, skip to next character
 
-checkif_need_lovercase:
+checkif_need_lowercase:
     cmp r5, #'Z'  // Check if character is uppercase
     bgt if_not_letter
 
@@ -51,6 +51,7 @@ checkif_need_lovercase:
 lowercase:
     add r5, r5, #32  // Convert to lowercase
     strb r5, [r4]  // Store lowercase character
+    mov r6, #0  // Clear flag
     b next_char  // Skip to next character
 
 capitalize:
