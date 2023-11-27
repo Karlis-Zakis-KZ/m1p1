@@ -20,17 +20,24 @@ convert_loop:
     blt next_char  // Skip to next character if not lowercase
 
     cmp r5, #'a'  // Check if character is lowercase
-    bge checkifneedswork  // Skip to next character if not lowercase
+    bge checkif_need_uppercase  // Skip to next character if not lowercase
 
     cmp r5, #'A'  // Check if character is lowercase
-    bge lowercase
+    bge checkif_need_lovercase
 
 
-checkifneedswork:
+checkif_need_uppercase:
     cmp r6, #1  // Check if first character of a word
     beq capitalize  // If first character, capitalize
 
     bne next_char  // If not first character, skip to next character
+
+checkif_need_lovercase:
+    cmp r6, #1  // Check if first character of a word
+    moveq r6, #0
+    beq next_char  // If first character, capitalize
+
+    bne lowercase  // If not first character, skip to next character
 
 lowercase:
     add r5, r5, #32  // Convert to lowercase
