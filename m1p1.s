@@ -20,10 +20,10 @@ convert_loop:
     beq next_char  // Skip to next character if space
 
     cmp r5, #122  // Check if character is uppercase
-    bgt next_char  // Skip to next character if uppercase
+    bgt if_not_letter  // Skip to next character if uppercase
 
     cmp r5, #65  // Check if character is lowercase
-    blt next_char  // Skip to next character if not lowercase
+    blt if_not_letter  // Skip to next character if not lowercase
 
     cmp r5, #'a'  // Check if character is lowercase
     bge checkif_need_uppercase  // Skip to next character if not lowercase
@@ -40,7 +40,7 @@ checkif_need_uppercase:
 
 checkif_need_lovercase:
     cmp r5, #'Z'  // Check if character is uppercase
-    bgt next_char
+    bgt if_not_letter
 
     cmp r6, #1  // Check if first character of a word
     moveq r6, #0
@@ -56,6 +56,10 @@ lowercase:
 capitalize:
     sub r5, r5, #32  // Convert to uppercase
     strb r5, [r4]  // Store uppercase character
+    mov r6, #0  // Clear flag
+    b next_char  // Skip to next character
+
+if_not_letter:
     mov r6, #0  // Clear flag
     b next_char  // Skip to next character
 
